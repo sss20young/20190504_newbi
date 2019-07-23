@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" type="text/css" href="static/univ.css">
+        <link rel="stylesheet" type="flex.css">
+    </head>
+    <body>
+        <div class="set">
+            <div class="left">
+                <p>{{univ.title}}</p>
+                <div class="leftflex"><img src="SNU.png" , width=500></div>
+            </div>
+            <div class="right">
+                <br><br>
+                <div width=70 height=10 name="body">
+                    {% for event in events %}
+                    <a href="{%url 'detail' event.event_id %}">{{event.event}}</a>
+                    <p class="tag">{{event.code}}</p>
+                    {% endfor %}
+                </div>
+                <div class="first">
+                    <div class="one">
+                        <button type="submit" class="btn">1일차</button>
+                    </div>
+                    <div class="two">
+                        <button type="submit" class="btn">2일차</button>
+                    </div>
+                    <div class="three">
+                        <button type="submit" class="btn">3일차</button>
+                    </div>
+                </div>
+                <div class="second">
+                    <p>재학생 축제 즐기기 꿀팁</p>
+                    <textarea cols=70 rows=10 name="body">쉴 때는 잔디밭에서 쉬세욧!</textarea>
+                </div>
+                <div class="third">
+                    <p>후기</p>
+                    <textarea cols=70 rows=5 name="body">꿀잼!!</textarea>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>대동여축제지도</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<link href="{% static 'css/fullcalendar.css' %}" rel='stylesheet' />
+		<link href="{% static 'css/index.css' %}" rel='stylesheet' />
+		<link href="{% static 'css/fullcalendar.print.css' %}" rel='stylesheet' media='print' />
+		<script src="{% static 'js/jquery-1.10.2.js' %}" type="text/javascript"></script>
+		<script src="{% static 'js/jquery-ui.custom.min.js' %}" type="text/javascript"></script>
+		<script src="{% static 'js/fullcalendar.js' %}" type="text/javascript"></script>
+		<script>
+			var map = {'January' : 1, 'February' : 2, 'March' : 3, 'April' : 4, 'May' : 5, 'June' : 6, 'July' : 7, 'August' : 8, 'September' : 9, 'October' : 10, 'November' : 11, 'December' : 12};
+			function changeMonth( input ) {
+				return map[input];
+			}
+
+			var arrSchedule = new Array();
+			var txt;
+			var spl;
+			var contents;
+			
+			var index = 0 ;
+
+			{% for post in schedule_show.all %}
+			start_txt = '{{post.start_date}}';
+			start_spl =  `${start_txt.split(', ')[1]} ${start_txt.split(', ')[0]}`;
+			end_txt = '{{post.end_date}}';
+			end_spl = `${end_txt.split(', ')[1]} ${end_txt.split(', ')[0]}`;
+
+			arrSchedule.push(
+				{
+					title : '{{post.title}}',
+					start : new Date(start_spl),
+					end : new Date(end_spl),
+					allDay: false,
+				}
+			)
+			{% endfor %}
+
+			
+			$(document).ready(function() {
+				var date = new Date();
+				var d = date.getDate();
+				var m = date.getMonth();
+				var y = date.getFullYear();
+
+				/*  className colors
+				className: default(transparent), important(red), chill(pink), success(green), info(blue)
+				*/
+
+				/* initialize the external events
+				-----------------------------------------------------------------*/
+				$('#external-events div.external-event').each(function() {
+
+					// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+					// it doesn't need to have a start or end
+					var eventObject = {
+						title: $.trim($(this).text()) // use the element's text as the event title
+					};
+
+					// store the Event Object in the DOM element so we can get to it later
+					$(this).data('eventObject', eventObject);
+
+					// make the event draggable using jQuery UI
+					$(this).draggable({
+						zIndex: 999,
+						revert: true,      // will cause the event to go back to its
+						revertDuration: 0  //  original position after the drag
+					});
+
+				});
+				/* initialize the calendar
+				-----------------------------------------------------------------*/
+
+				var calendar =  $('#calendar').fullCalendar({
+					header: {
+						left: 'title',
+						center: 'agendaDay,agendaWeek,month',
+						right: 'prev,next today'
+					},
+					editable: true,
+					firstDay: 1, //  1(Monday) this can be changed to 0(Sunday) for the USA system
+					selectable: true,
+					defaultView: 'month',
+
+					axisFormat: 'h:mm',
+					columnFormat: {
+						month: 'ddd',    // Mon
+						week: 'ddd d', // Mon 7
+						day: 'dddd M/d',  // Monday 9/7
+						agendaDay: 'dddd d'
+					},
+					titleFormat: {
+						month: 'MMMM yyyy', // September 2009
+						week: "MMMM yyyy", // September 2009
+						day: 'MMMM yyyy'                  // Tuesday, Sep 8, 2009
+					},
+					allDaySlot: false,
+					selectHelper: true,
+
+					droppable: true, // this allows things to be dropped onto the calendar !!!
+					drop: function(date, allDay) { // this function is called when something is dropped
+
+						// retrieve the dropped element's stored Event Object
+						var originalEventObject = $(this).data('eventObject');
+
+						// we need to copy it, so that multiple events don't have a reference to the same object
+						var copiedEventObject = $.extend({}, originalEventObject);
+
+						// assign it the date that was reported
+						copiedEventObject.start = date;
+						copiedEventObject.allDay = allDay;
+
+						// render the event on the calendar
+						// the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+						$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+						// is the "remove after drop" checkbox checked?
+						if ($('#drop-remove').is(':checked')) {
+							// if so, remove the element from the "Draggable Events" list
+							$(this).remove();
+						}
+
+					},
+					events : arrSchedule.map(r => {
+						return {...r, color: "#ccc"}
+					})
+				});
+			});
+		</script>
+	</head>
+	<body>
+		{% load socialaccount %}
+		{% providers_media_js %}    
+		<a href="/accounts/signup">회원가입</a><br>
+
+		{% if user.is_authenticated %}
+		<a href="/accounts/logout">로그아웃</a><br>
+		{{user.username}} 님이 로그인 중
+
+		{% else %}
+		<a href="{% provider_login_url 'google' %}">구글 로그인</a><br>
+		로그인을 해야합니다
+
+		{% endif %}
+
+		<header style="text-align: center"><h1>대동여축제지도</h1></header>
+		<div style="margin:auto;">
+			<div style="display:flex">
+				<section>
+					<div id='wrap'>
+						<div id='calendar'></div>
+						<div style='clear:both'></div>
+					</div>
+				</section>
+				<div style="display:flex;flex-direction:column;width:400px">
+				{% for post in schedule_show.all %}
+				<article>
+					<a href="{{post.url}}" id="univ" style="padding-top: 10px">{{post.title}}학교</a>
+					<br><br>
+					{{post.content}}
+				</article>
+				{% endfor %}
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

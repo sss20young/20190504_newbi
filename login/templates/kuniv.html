@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        {% comment %}
+        <link rel="stylesheet" type="text/css" href="../../static/univ.css">
+        {% endcomment %}
+        <link rel="stylesheet" type="flex.css">
+        <style>
+            @font-face { font-family: 'NIXGONM-Vb'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/NIXGONM-Vb.woff') format('woff'); font-weight: normal; font-style: normal; }
+            body { margin: 10px; margin-top: 30px; font-size: 14px; padding: 20px;
+            font-family: 'NIXGONM-Vb',Arial,Verdana,sans-serif;
+            background-color: #FAF4C0;}
+            .set{
+                display: flex;
+                flex-direction: row;
+                flex: 1 1 0;
+                justify-content: space-between;
+            }
+            .left{
+                font-size : 30pt;
+                font-weight : bold;
+                padding-left: 150px;
+                font-style : Monospace;
+            }
+            .right{
+                padding-right: 200px;
+            }
+            .first{
+                font-size : 15pt;
+            }
+            .second{
+            font-size : 15pt;
+            }
+            .third{
+            font-size : 15pt;
+            }
+            .btn{
+            font-style: italic;
+            font-weight: bold;
+            font-size: .8em;
+            line-height: 1.2;
+            font-family: Arial, sans-serif;
+            color : #FCA205;
+            }
+            .flexitem {
+                width: 150px;
+                height: 100px;
+                border: 2px solid white;
+                background-color: skyblue;
+                font-size: 40px;
+            }
+
+            .flexbox {
+                display: flex;
+                flex-direction: row;
+                width: 200px;
+                height: 100px;
+                border: 2px solid white;
+                background-color: skyblue;
+                font-size: 40px;
+            }
+
+            .daybox{
+                display: flex;
+                flex-direction: row;
+            }   
+            .flexitem {
+                
+                width: 150px;
+                height: 90px;
+                border: 2px solid white;
+                background-color: rgb(245, 247, 141);
+                font-size: 10px;
+            }
+            .leftflex {
+                display: flex;
+                width: 500px;
+                height: 500px;
+                border: 2px solid white;
+                background-color: rgb(135, 235, 152);
+                font-size: 10pt;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="set">
+            <div class="left">
+                <p>{{univ.title}}</p>
+                <div class="leftflex"><img src="/static/KWU.jpg" , width=500></div>
+            </div>
+        <div class="right">
+            <br><br>
+            <div width=70 height=10 name="body">
+                {% for event in events %}
+                <a href="{%url 'detail' event.event_id %}">{{event.event}}</a>
+                <p class="tag">{{event.code}}</p>
+                {% endfor %}
+            </div>
+            <div class="first">
+                <p>날짜별 일정</p> 
+            </div>       
+            <div class="daybox">
+                <div class="flexitem">
+                    0514 팡타스틱<br><br>
+                    제시<br>싸이
+                </div>
+                <div class="flexitem">0515 자체발광 첫째날<br><br>
+                        디에이드
+                </div>
+                <div class="flexitem">0516 자체발광 둘째날<br><br>
+                        김나영
+                </div>
+                <div class="flexitem">0517자체발광 셋째날<br><br>
+                        (여자)아이들<br>벤<br>민경훈
+                </div>    
+            </div>
+            <div class="second">
+                <p>재학생 축제 즐기기 꿀팁</p>
+                <textarea cols=70 rows=10 name="body">
+                    지하철역까지 꽤 멀어요!
+                    맥도날드 없어요 ㅜㅜ
+                </textarea>
+            </div>
+            <div class="third">
+                <p>후기</p>
+                <textarea cols=70 rows=5 name="body">
+                    주점 짱짱!
+                    라인업 최고!
+                </textarea>
+            </div>
+        </div>
+    </body>
+</html>
