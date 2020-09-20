@@ -1,5 +1,13 @@
-pip install django-allauth
+# 🎇 축제 정보 제공 서비스 (20190504 - newbithon) 🎇
 
-python manage.py migrate --run-syncdb
 
-cf. 수정사항 할 부분이 많다.
+
+ 	$ pip install django-allauth
+  
+<br>
+  
+ 	$ python manage.py migrate --run-syncdb
+
+<br>
+<br>
+TODO. 수정 할 부분이 많다.
